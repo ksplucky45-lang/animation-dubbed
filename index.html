@@ -1,0 +1,186 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Animation Dubbed</title><style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
+
+body{
+  background:#111;
+  color:white;
+}
+
+header{
+  background:#1c1c1c;
+  padding:16px 5%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+}
+
+.logo{
+  color:#ffcc00;
+  font-size:24px;
+  font-weight:bold;
+}
+
+nav a{
+  color:white;
+  text-decoration:none;
+  margin-left:18px;
+  font-size:14px;
+}
+
+.hero{
+  padding:70px 7%;
+  text-align:center;
+  background:linear-gradient(135deg,#161616,#292929);
+}
+
+.hero h1{
+  font-size:42px;
+  color:#ffcc00;
+}
+
+.hero p{
+  color:#bbb;
+  margin:15px 0;
+}
+
+.search{
+  width:90%;
+  max-width:500px;
+  padding:14px;
+  border:none;
+  border-radius:25px;
+  margin-top:15px;
+  font-size:16px;
+}
+
+.section{
+  padding:30px 7%;
+}
+
+.section h2{
+  margin-bottom:20px;
+  color:#ffcc00;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:18px;
+}
+
+.card{
+  background:#222;
+  border-radius:10px;
+  overflow:hidden;
+  transition:.3s;
+}
+
+.card:hover{
+  transform:scale(1.04);
+}
+
+.poster{
+  height:210px;
+  background:linear-gradient(135deg,#444,#222);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:45px;
+}
+
+.card h3{
+  padding:12px;
+  font-size:16px;
+}
+
+.card p{
+  padding:0 12px 12px;
+  color:#aaa;
+  font-size:13px;
+}
+
+footer{
+  background:#1c1c1c;
+  text-align:center;
+  padding:25px;
+  margin-top:30px;
+  color:#888;
+}
+
+@media(max-width:600px){
+  nav{
+    display:none;
+  }
+
+  .hero h1{
+    font-size:30px;
+  }
+}
+</style></head><body><header>
+  <div class="logo">🎬 Animation Dubbed</div>  <nav>
+    <a href="#">Home</a>
+    <a href="#latest">Latest</a>
+    <a href="#popular">Popular</a>
+    <a href="#categories">Categories</a>
+  </nav>
+</header><section class="hero">
+  <h1>Animation Dubbed</h1>
+  <p>Watch your favorite animated shows and movies.</p>  <input class="search" type="text" placeholder="🔍 Search animation...">
+</section><section class="section" id="latest">
+  <h2>🔥 Latest Episodes</h2>  <div class="cards">
+    <div class="card">
+      <div class="poster">🎬</div>
+      <h3>Animation One</h3>
+      <p>Latest Episode</p>
+    </div><div class="card">
+  <div class="poster">⚡</div>
+  <h3>Animation Two</h3>
+  <p>New Episode</p>
+</div>
+
+<div class="card">
+  <div class="poster">🔥</div>
+  <h3>Animation Three</h3>
+  <p>Episode 12</p>
+</div>
+
+<div class="card">
+  <div class="poster">🌟</div>
+  <h3>Animation Four</h3>
+  <p>Episode 8</p>
+</div>
+
+  </div>
+</section><section class="section" id="popular">
+  <h2>⭐ Popular Animations</h2>  <div class="cards">
+    <div class="card">
+      <div class="poster">👑</div>
+      <h3>Popular Animation</h3>
+      <p>Trending Now</p>
+    </div><div class="card">
+  <div class="poster">🚀</div>
+  <h3>Adventure World</h3>
+  <p>Popular Series</p>
+</div>
+
+<div class="card">
+  <div class="poster">🐉</div>
+  <h3>Dragon Story</h3>
+  <p>Top Rated</p>
+</div>
+
+  </div>
+</section><footer>
+  <p>© 2026 Animation Dubbed</p>
+</footer></body>
+</html>
