@@ -7,6 +7,10 @@
 <title>Animation Dubbed</title>
 
 <style>
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -15,13 +19,21 @@ body {
 }
 
 header {
+  background: #1b1b1b;
   text-align: center;
-  padding: 25px;
-  background: #1c1c1c;
+  padding: 25px 15px;
+}
+
+header h1 {
+  margin: 0;
+}
+
+header p {
+  color: #aaa;
 }
 
 .container {
-  max-width: 1000px;
+  max-width: 900px;
   margin: auto;
   padding: 20px;
 }
@@ -35,53 +47,48 @@ input {
   flex: 1;
   padding: 15px;
   font-size: 17px;
-  border-radius: 8px;
   border: none;
+  border-radius: 8px;
 }
 
 button {
   padding: 15px 25px;
   border: none;
   border-radius: 8px;
-  cursor: pointer;
+  font-size: 16px;
   font-weight: bold;
+  cursor: pointer;
 }
 
 #results {
   margin-top: 25px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
 }
 
 .card {
   background: #1e1e1e;
+  padding: 20px;
   border-radius: 12px;
-  overflow: hidden;
   border: 1px solid #333;
 }
 
-.card img {
-  width: 100%;
-  height: 350px;
-  object-fit: cover;
-}
-
-.info {
-  padding: 15px;
-}
-
-.info h2 {
+.card h2 {
   margin-top: 0;
+}
+
+.card p {
+  line-height: 1.6;
+  color: #ddd;
 }
 
 .message {
   text-align: center;
-  padding: 30px;
   color: #aaa;
+  padding: 25px;
 }
 
-@media(max-width:600px) {
+@media (max-width: 600px) {
   .search-box {
     flex-direction: column;
   }
@@ -92,136 +99,176 @@ button {
 <body>
 
 <header>
-<h1>Animation Dubbed</h1>
-<p>Search for your favorite anime</p>
+  <h1>Animation Dubbed</h1>
+  <p>Search for your favorite anime</p>
 </header>
 
 <div class="container">
 
-<div class="search-box">
-<input id="searchInput" type="text" placeholder="Search anime...">
-<button id="searchButton">Search</button>
-</div>
+  <div class="search-box">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Search anime name..."
+    >
+    <button onclick="searchAnime()">Search</button>
+  </div>
 
-<h2>🔎 Search Results</h2>
+  <h2>🔎 Search Results</h2>
 
-<div id="results">
-<p class="message">Search for an anime above.</p>
-</div>
+  <div id="results">
+    <p class="message">Search for an anime above.</p>
+  </div>
 
 </div>
 
 <script>
 
-const input = document.getElementById("searchInput");
-const button = document.getElementById("searchButton");
-const results = document.getElementById("results");
+const animeList = [
 
-button.addEventListener("click", searchAnime);
+{
+name: "One Piece",
+genre: "Action, Adventure, Fantasy",
+status: "Ongoing",
+episodes: "1000+",
+about: "Monkey D. Luffy and his pirate crew travel the seas searching for the legendary One Piece treasure."
+},
 
-input.addEventListener("keydown", function(event) {
-  if (event.key === "Enter") {
-    searchAnime();
-  }
-});
+{
+name: "Naruto",
+genre: "Action, Adventure, Shounen",
+status: "Completed",
+episodes: "220",
+about: "Naruto Uzumaki is a young ninja who dreams of becoming the leader of his village."
+},
 
-async function searchAnime() {
+{
+name: "Naruto Shippuden",
+genre: "Action, Adventure, Shounen",
+status: "Completed",
+episodes: "500",
+about: "Naruto continues his journey and faces powerful enemies to protect his friends and village."
+},
 
-  const query = input.value.trim();
+{
+name: "Dragon Ball Z",
+genre: "Action, Adventure, Fantasy",
+status: "Completed",
+episodes: "291",
+about: "Goku and his friends defend Earth from powerful enemies."
+},
 
-  if (!query) {
+{
+name: "Attack on Titan",
+genre: "Action, Dark Fantasy",
+status: "Completed",
+episodes: "Multiple seasons",
+about: "Humanity struggles for survival in a world threatened by Titans."
+},
+
+{
+name: "Demon Slayer",
+genre: "Action, Fantasy",
+status: "Ongoing",
+episodes: "Multiple seasons",
+about: "A young boy becomes a demon slayer after his family faces tragedy."
+},
+
+{
+name: "Jujutsu Kaisen",
+genre: "Action, Supernatural",
+status: "Ongoing",
+episodes: "Multiple seasons",
+about: "Students fight dangerous curses using supernatural abilities."
+},
+
+{
+name: "Death Note",
+genre: "Mystery, Psychological, Supernatural",
+status: "Completed",
+episodes: "37",
+about: "A student discovers a mysterious notebook with supernatural powers."
+},
+
+{
+name: "My Hero Academia",
+genre: "Action, Superhero, Shounen",
+status: "Completed",
+episodes: "Multiple seasons",
+about: "A boy without powers dreams of becoming a great hero."
+},
+
+{
+name: "Bleach",
+genre: "Action, Adventure, Supernatural",
+status: "Completed",
+episodes: "366+",
+about: "Ichigo gains supernatural powers and fights dangerous spirits."
+}
+
+];
+
+
+function searchAnime() {
+
+  const input = document
+    .getElementById("searchInput")
+    .value
+    .toLowerCase()
+    .trim();
+
+  const results = document.getElementById("results");
+
+  results.innerHTML = "";
+
+  if (input === "") {
     results.innerHTML =
       '<p class="message">Please enter an anime name.</p>';
     return;
   }
 
-  results.innerHTML =
-    '<p class="message">Loading...</p>';
+  const filtered = animeList.filter(anime =>
+    anime.name.toLowerCase().includes(input)
+  );
 
-  try {
+  if (filtered.length === 0) {
+    results.innerHTML =
+      '<p class="message">Anime not found.</p>';
+    return;
+  }
 
-    const url =
-      "https://api.jikan.moe/v4/anime?q=" +
-      encodeURIComponent(query) +
-      "&limit=8&sfw=true";
+  filtered.forEach(anime => {
 
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      throw new Error("Search failed");
-    }
-
-    const json = await response.json();
-
-    if (!json.data || json.data.length === 0) {
-      results.innerHTML =
-        '<p class="message">No anime found.</p>';
-      return;
-    }
-
-    results.innerHTML = "";
-
-    json.data.forEach(function(anime) {
-
-      const title = anime.title || "Unknown";
-
-      const image =
-        anime.images &&
-        anime.images.jpg &&
-        anime.images.jpg.image_url
-        ? anime.images.jpg.image_url
-        : "";
-
-      const genres =
-        anime.genres && anime.genres.length
-        ? anime.genres.map(g => g.name).join(", ")
-        : "Not available";
-
-      const synopsis =
-        anime.synopsis || "No description available.";
-
-      results.innerHTML += `
-
+    results.innerHTML += `
       <div class="card">
 
-        ${image ? `<img src="${image}" alt="${title}">` : ""}
+        <h2>${anime.name}</h2>
 
-        <div class="info">
+        <p><b>Genre:</b> ${anime.genre}</p>
 
-          <h2>${title}</h2>
+        <p><b>Status:</b> ${anime.status}</p>
 
-          <p><b>Type:</b> ${anime.type || "Unknown"}</p>
+        <p><b>Episodes:</b> ${anime.episodes}</p>
 
-          <p><b>Episodes:</b> ${anime.episodes || "Unknown"}</p>
-
-          <p><b>Status:</b> ${anime.status || "Unknown"}</p>
-
-          <p><b>Genre:</b> ${genres}</p>
-
-          <p><b>Score:</b> ${anime.score || "N/A"}</p>
-
-          <p><b>About:</b> ${synopsis}</p>
-
-        </div>
+        <p><b>About:</b> ${anime.about}</p>
 
       </div>
+    `;
 
-      `;
-
-    });
-
-  }
-
-  catch (error) {
-
-    console.error(error);
-
-    results.innerHTML =
-      '<p class="message">Unable to load anime right now. Please try again.</p>';
-
-  }
+  });
 
 }
+
+
+document
+  .getElementById("searchInput")
+  .addEventListener("keydown", function(event) {
+
+    if (event.key === "Enter") {
+      searchAnime();
+    }
+
+  });
 
 </script>
 
