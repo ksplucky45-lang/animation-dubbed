@@ -1,8 +1,12 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Animation Dubbed</title><style>
+
+<title>Animation Dubbed</title>
+
+<style>
 * {
   box-sizing: border-box;
 }
@@ -22,7 +26,6 @@ header {
 
 header h1 {
   margin: 0;
-  font-size: 32px;
 }
 
 header p {
@@ -30,7 +33,7 @@ header p {
 }
 
 .container {
-  max-width: 1100px;
+  max-width: 900px;
   margin: auto;
   padding: 20px;
 }
@@ -58,25 +61,16 @@ button {
 }
 
 #results {
-  margin-top: 25;
+  margin-top: 25px;
+  display: grid;
   gap: 20px;
 }
 
 .card {
   background: #1e1e1e;
+  padding: 20px;
   border-radius: 12px;
-  overflow: hidden;
   border: 1px solid #333;
-}
-
-.poster {
-  width: 100%;
-  height: 360px;
-  object-fit: cover;
-}
-
-.card-content {
-  padding: 18px;
 }
 
 .card h2 {
@@ -84,351 +78,199 @@ button {
 }
 
 .card p {
-  line-height: 1.5;
+  line-height: 1.6;
   color: #ddd;
 }
 
-.message,
-.loading {
-  grid-column: 1 / -1;
+.message {
   text-align: center;
   color: #aaa;
-  padding: 30px;
+  padding: 25px;
 }
 
 @media (max-width: 600px) {
   .search-box {
     flex-direction: column;
   }
-
-  button {
-    width100%;
-  }
 }
-</style></head><body><header>
-  <h1>🎬 Animation Dubbed</h1>
-  <p>Search anime in English, Japanese, Romaji and alternative names</p>
-</header><div class="container">  <div class="search-box"><input
-  type="text"
-  id="searchInput"
-  placeholder="Search any anime name..."
->
+</style>
+</head>
 
-<button onclick="searchAnime()">Search</button>
+<body>
 
-  </div>  <h2>🔎 Search Results</h2>  <div id="results">
+<header>
+  <h1>Animation Dubbed</h1>
+  <p>Search for your favorite anime</p>
+</header>
+
+<div class="container">
+
+  <div class="search-box">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Search anime name..."
+    >
+    <button onclick="searchAnime()">Search</button>
+  </div>
+
+  <h2>🔎 Search Results</h2>
+
+  <div id="results">
     <p class="message">Search for an anime above.</p>
-  </div></div><script>
+  </div>
 
-functionescapeHTML(text) {
-  const div = document.createElement("div");
-  div.textContent = text || "";
-  return div.innerHTML;
+</div>
+
+<script>
+
+const animeList = [
+
+{
+name: "One Piece",
+genre: "Action, Adventure, Fantasy",
+status: "Ongoing",
+episodes: "1000+",
+about: "Monkey D. Luffy and his pirate crew travel the seas searching for the legendary One Piece treasure."
+},
+
+{
+name: "Naruto",
+genre: "Action, Adventure, Shounen",
+status: "Completed",
+episodes: "220",
+about: "Naruto Uzumaki is a young ninja who dreams of becoming the leader of his village."
+},
+
+{
+name: "Naruto Shippuden",
+genre: "Action, Adventure, Shounen",
+status: "Completed",
+episodes: "500",
+about: "Naruto continues his journey and faces powerful enemies to protect his friends and village."
+},
+
+{
+name: "Dragon Ball Z",
+genre: "Action, Adventure, Fantasy",
+status: "Completed",
+episodes: "291",
+about: "Goku and his friends defend Earth from powerful enemies."
+},
+
+{
+name: "Attack on Titan",
+genre: "Action, Dark Fantasy",
+status: "Completed",
+episodes: "Multiple seasons",
+about: "Humanity struggles for survival in a world threatened by Titans."
+},
+
+{
+name: "Demon Slayer",
+genre: "Action, Fantasy",
+status: "Ongoing",
+episodes: "Multiple seasons",
+about: "A young boy becomes a demon slayer after his family faces tragedy."
+},
+
+{
+name: "Jujutsu Kaisen",
+genre: "Action, Supernatural",
+status: "Ongoing",
+episodes: "Multiple seasons",
+about: "Students fight dangerous curses using supernatural abilities."
+},
+
+{
+name: "Death Note",
+genre: "Mystery, Psychological, Supernatural",
+status: "Completed",
+episodes: "37",
+about: "A student discovers a mysterious notebook with supernatural powers."
+},
+
+{
+name: "My Hero Academia",
+genre: "Action, Superhero, Shounen",
+status: "Completed",
+episodes: "Multiple seasons",
+about: "A boy without powers dreams of becoming a great hero."
+},
+
+{
+name: "Bleach",
+genre: "Action, Adventure, Supernatural",
+status: "Completed",
+episodes: "366+",
+about: "Ichigo gains supernatural powers and fights dangerous spirits."
 }
 
+];
 
-asyncfunction searchAnime() {
+
+function searchAnime() {
 
   const input = document
     .getElementById("searchInput")
     .value
+    .toLowerCase()
     .trim();
 
-  const results =
-    document.getElementById("results");
+  const results = document.getElementById("results");
 
+  results.innerHTML = "";
 
-  if (!input) {
-
+  if (input === "") {
     results.innerHTML =
       '<p class="message">Please enter an anime name.</p>';
-
     return;
-
   }
 
-
-  results.innerHTML =
-    '<p class="loading">🔄 Searching anime...</p>';
-
-
-  try {
-
-    const url =
-      "https://api.jikan.moe/v4/anime?q=" +
-      encodeURIComponent(input) +
-      "&limit=25";
-
-    constresponse =
-      await fetch(url);
-
-
-    if (!response.ok) {
-
-   thrownew
-        "Unable to connect to anime database"
-      );
-
-    }
-
-
-    const data =
-      await response.json();
-
-
-    let animeResults =
-      data.data || [];
-
-
-    /*
-    Extra client-side matching:
-    Checks title, English title,
-    Japanese title and synonyms.
-    */
-
-    const query =
-      input.toLowerCase();
-
-
-    const exactMatches =
-      animeResults.filter(anime => {
-
-        const titles = [
-
-          anime.title,
-
-          anime.title_english,
-
-          anime.title_japanese,
-
-          ...(anime.titles || [])
-            .map(item => item.title),
-
-          ...(anime.title_synonyms || [])
-
-        ]
-          .filter(Boolean)
-          .join(" ")
-          .toLowerCase();
-
-
-        return titles.includes(query);
-
-      });
-
-
-    /*
-    Show exact/better matches first.
-    */
-
-    const otherMatches =
-      animeResults.filter(
-        anime =>
-          !exactMatches.includes(anime)
-      );
-
-
-    animeResults = [
-      ...exactMatches,
-      ...otherMatches
-    ];
-
-
-    if (animeResults.length === 0) {
-
-      results.innerHTML =
-        '<p class="message"
-
-      retur
-
-    }
-
-
-    results.innerHTML = "";
-
-
-    animeResults.forEach(anime => {
-
-      consttitle =
-        anime.title_english ||
-        anime.title ||
-        "Unknown";
-
-
-      constjapaneseTitle =
-        anime.title_japanese ||
-        "";
-
-
-      cont synonyms =
-        anime.title_synonyms &&
-        anime.title_synonyms.length
-          ? anime.title_synonyms
-              .slice(0, 5)
-              .join(", ")
-       available";
-
-
-      const image =
-        anime.images?.jpg?.large_image_url ||
-        anime.images?.jpg?.image_url ||
-        "";
-
-
-      const genres =
-        anime.genres &&
-        anime.genres.length
-          ? anime.genres
-              .map(g => g.name)
-              .join(", ")
-          : "Not available";
-
-
-      const episodes =
-        anime.episodes ??
-        "Unknown";
-
-
-      const status =
-        anime.status ||
-        "Unknown";
-
-
-      const score =
-        anime.score ??
-        "Not rated";
-
-
-      const synopsis =
-        anime.synopsis
-          ? anime.synopsis
-              .substring(0, 350) +
-            (anime.synopsis.length > 350
-              ? "..."
-              : ""
-
-
-      results.innerHTML += `
-
-        <div class="card">
-
-          ${
-            image
-              ? `
-                <img
-                  class="poster"
-                  src="${image}"
-                  alt="${escapeHTML(title)}"
-                  loading="lazy"
-                >
-              `
-              : ""
-          }
-
-
-          <div class="card-content">
-
-            <h2>
-              ${escapeHTML(title)}
-            </h2>
-
-
-            ${
-              japaneseTitle
-                ? `
-                  <p>
-                    <b>🇯🇵 Japanese:</b>
-                    ${escapeHTML(japaneseTitle)}
-                  </p>
-                `
-                : ""
-            }
-
-
-            <p>
-              <b>🔄 Other names:</b>
-              ${escapeHTML(synonyms)}
-            </p>
-
-
-            <p>
-              <b>⭐ Rating:</b>
-              ${score}
-            </p>
-
-
-            <p>
-              <b>🎭 Genres:</b>
-              ${escapeHTML(genres)}
-            </p>
-
-
-            <p>
-              <b>📺 Episodes:</b>
-              ${episodes}
-            </p>
-
-
-            <p>
-              <b>📡 Status:</b>
-              ${escapeHTML(status)}
-            </p>
-
-
-            <p>
-              <b>📝 About:</b><br>
-              ${escapeHTML(synopsis)}
-            </p>
-
-
-          </div>
-
-        </div>
-
-      `;
-
-    });
-
-
+  const filtered = animeList.filter(anime =>
+    anime.name.toLowerCase().includes(input)
+  );
+
+  if (filtered.length === 0) {
+    results.innerHTML =
+      '<p class="message">Anime not found.</p>';
+    return;
   }
 
+  filtered.forEach(anime => {
 
-  catch (error) {
+    results.innerHTML += `
+      <div class="card">
 
-    console.error(error);
+        <h2>${anime.name}</h2>
 
+        <p><b>Genre:</b> ${anime.genre}</p>
 
-    results.innerHTML = `
+        <p><b>Status:</b> ${anime.status}</p>
 
-      <p class="message">
+        <p><b>Episodes:</b> ${anime.episodes}</p>
 
-         Anime data load ho 
+        <p><b>About:</b> ${anime.about}</p>
 
-        
-
-      </p>
-
+      </div>
     `;
 
-  }
+  });
 
 }
 
 
-
 document
   .getElementById("searchInput")
-  .addEventListener(
-    "keydown",
+  .addEventListener("keydown", function(event) {
 
-      (event.key === "Enter") {
-
-        searchAnime();
-
-      }
-
+    if (event.key === "Enter") {
+      searchAnime();
     }
-  );
 
-</script></body>
+  });
+
+</script>
+
+</body>
 </html>
