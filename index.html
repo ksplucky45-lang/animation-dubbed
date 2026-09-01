@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Animation Dubbed</title>
-
-<style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Animation Dubbed</title><style>
 * {
   box-sizing: border-box;
 }
@@ -26,14 +21,16 @@ header {
 
 header h1 {
   margin: 0;
+  font-size: 32px;
 }
 
 header p {
   color: #aaa;
+  margin-bottom: 0;
 }
 
 .container {
-  max-width: 900px;
+  max-width: 1100px;
   margin: auto;
   padding: 20px;
 }
@@ -60,21 +57,38 @@ button {
   cursor: pointer;
 }
 
+button:hover {
+  opacity: 0.85;
+}
+
 #results {
   margin-top: 25px;
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
 }
 
 .card {
   background: #1e1e1e;
-  padding: 20px;
   border-radius: 12px;
+  overflow: hidden;
   border: 1px solid #333;
+}
+
+.poster {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  display: block;
+}
+
+.card-content {
+  padding: 18px;
 }
 
 .card h2 {
   margin-top: 0;
+  font-size: 22px;
 }
 
 .card p {
@@ -83,179 +97,183 @@ button {
 }
 
 .message {
+  grid-column: 1 / -1;
   text-align: center;
   color: #aaa;
   padding: 25px;
 }
 
+.loading {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 18px;
+  padding: 30px;
+}
+
 @media (max-width: 600px) {
+
   .search-box {
     flex-direction: column;
   }
+
+  button {
+    width: 100%;
+  }
+
+  .poster {
+    height: 400px;
+  }
+
 }
-</style>
-</head>
-
-<body>
-
-<header>
-  <h1>Animation Dubbed</h1>
+</style></head><body><header>
+  <h1>🎬 Animation Dubbed</h1>
   <p>Search for your favorite anime</p>
-</header>
-
-<div class="container">
-
-  <div class="search-box">
+</header><div class="container">  <div class="search-box">
     <input
       type="text"
       id="searchInput"
       placeholder="Search anime name..."
-    >
-    <button onclick="searchAnime()">Search</button>
-  </div>
+    ><button onclick="searchAnime()">Search</button>
 
-  <h2>🔎 Search Results</h2>
-
-  <div id="results">
+  </div>  <h2>🔎 Search Results</h2>  <div id="results">
     <p class="message">Search for an anime above.</p>
-  </div>
+  </div></div><script>
 
-</div>
-
-<script>
-
-const animeList = [
-
-{
-name: "One Piece",
-genre: "Action, Adventure, Fantasy",
-status: "Ongoing",
-episodes: "1000+",
-about: "Monkey D. Luffy and his pirate crew travel the seas searching for the legendary One Piece treasure."
-},
-
-{
-name: "Naruto",
-genre: "Action, Adventure, Shounen",
-status: "Completed",
-episodes: "220",
-about: "Naruto Uzumaki is a young ninja who dreams of becoming the leader of his village."
-},
-
-{
-name: "Naruto Shippuden",
-genre: "Action, Adventure, Shounen",
-status: "Completed",
-episodes: "500",
-about: "Naruto continues his journey and faces powerful enemies to protect his friends and village."
-},
-
-{
-name: "Dragon Ball Z",
-genre: "Action, Adventure, Fantasy",
-status: "Completed",
-episodes: "291",
-about: "Goku and his friends defend Earth from powerful enemies."
-},
-
-{
-name: "Attack on Titan",
-genre: "Action, Dark Fantasy",
-status: "Completed",
-episodes: "Multiple seasons",
-about: "Humanity struggles for survival in a world threatened by Titans."
-},
-
-{
-name: "Demon Slayer",
-genre: "Action, Fantasy",
-status: "Ongoing",
-episodes: "Multiple seasons",
-about: "A young boy becomes a demon slayer after his family faces tragedy."
-},
-
-{
-name: "Jujutsu Kaisen",
-genre: "Action, Supernatural",
-status: "Ongoing",
-episodes: "Multiple seasons",
-about: "Students fight dangerous curses using supernatural abilities."
-},
-
-{
-name: "Death Note",
-genre: "Mystery, Psychological, Supernatural",
-status: "Completed",
-episodes: "37",
-about: "A student discovers a mysterious notebook with supernatural powers."
-},
-
-{
-name: "My Hero Academia",
-genre: "Action, Superhero, Shounen",
-status: "Completed",
-episodes: "Multiple seasons",
-about: "A boy without powers dreams of becoming a great hero."
-},
-
-{
-name: "Bleach",
-genre: "Action, Adventure, Supernatural",
-status: "Completed",
-episodes: "366+",
-about: "Ichigo gains supernatural powers and fights dangerous spirits."
-}
-
-];
-
-
-function searchAnime() {
+async function searchAnime() {
 
   const input = document
     .getElementById("searchInput")
     .value
-    .toLowerCase()
     .trim();
 
-  const results = document.getElementById("results");
-
-  results.innerHTML = "";
+  const results =
+    document.getElementById("results");
 
   if (input === "") {
+
     results.innerHTML =
       '<p class="message">Please enter an anime name.</p>';
+
     return;
   }
 
-  const filtered = animeList.filter(anime =>
-    anime.name.toLowerCase().includes(input)
-  );
+  results.innerHTML =
+    '<p class="loading">🔄 Searching anime...</p>';
 
-  if (filtered.length === 0) {
-    results.innerHTML =
-      '<p class="message">Anime not found.</p>';
-    return;
+  try {
+
+    const response = await fetch(
+      `https://api.jikan.moe/v4/anime?q=${encodeURIComponent(input)}&limit=12`
+    );
+
+    if (!response.ok) {
+      throw new Error("API Error");
+    }
+
+    const data = await response.json();
+
+    if (!data.data || data.data.length === 0) {
+
+      results.innerHTML =
+        '<p class="message">Anime not found.</p>';
+
+      return;
+    }
+
+    results.innerHTML = "";
+
+    data.data.forEach(anime => {
+
+      const title =
+        anime.title || "Unknown";
+
+      const image =
+        anime.images?.jpg?.image_url ||
+        "";
+
+      const genres =
+        anime.genres?.map(g => g.name).join(", ") ||
+        "Not available";
+
+      const episodes =
+        anime.episodes || "Unknown";
+
+      const status =
+        anime.status || "Unknown";
+
+      const score =
+        anime.score || "Not rated";
+
+      const synopsis =
+        anime.synopsis
+          ? anime.synopsis.substring(0, 300) + "..."
+          : "Description not available.";
+
+      results.innerHTML += `
+
+        <div class="card">
+
+          ${
+            image
+              ? `<img class="poster" src="${image}" alt="${title}">`
+              : ""
+          }
+
+          <div class="card-content">
+
+            <h2>${title}</h2>
+
+            <p>
+              <b>⭐ Rating:</b>
+              ${score}
+            </p>
+
+            <p>
+              <b>🎭 Genre:</b>
+              ${genres}
+            </p>
+
+            <p>
+              <b>📺 Episodes:</b>
+              ${episodes}
+            </p>
+
+            <p>
+              <b>📅 Status:</b>
+              ${status}
+            </p>
+
+            <p>
+              <b>📝 About:</b>
+              ${synopsis}
+            </p>
+
+          </div>
+
+        </div>
+
+      `;
+
+    });
+
   }
 
-  filtered.forEach(anime => {
+  catch (error) {
 
-    results.innerHTML += `
-      <div class="card">
+    console.error(error);
 
-        <h2>${anime.name}</h2>
+    results.innerHTML = `
 
-        <p><b>Genre:</b> ${anime.genre}</p>
+      <p class="message">
 
-        <p><b>Status:</b> ${anime.status}</p>
+        ❌ Unable to load anime right now.<br>
+        Please try again later.
 
-        <p><b>Episodes:</b> ${anime.episodes}</p>
+      </p>
 
-        <p><b>About:</b> ${anime.about}</p>
-
-      </div>
     `;
 
-  });
+  }
 
 }
 
@@ -265,12 +283,12 @@ document
   .addEventListener("keydown", function(event) {
 
     if (event.key === "Enter") {
+
       searchAnime();
+
     }
 
   });
 
-</script>
-
-</body>
+</script></body>
 </html>
