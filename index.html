@@ -1,8 +1,187 @@
+all Anime movie stylish 
+all languages atylish 
+Anime episode watching full stylish 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-zju3dv/animatable_nerf · README.md
-…tory includes the implementation of Animatable SDF (now dubbed [Animatable Neural Fields](https://arxiv.org/abs/2203.0…
-…erf_s9p.yaml exp_name aninerf_s9p_full resume True aninerf_animation True init_aninerf aninerf_s9p test_novel_pose True
-…fg_file configs/aninerf_s9p.yaml exp_name aninerf_s9p_full resume False aninerf_animation True init_aninerf aninerf_s9p
-…erf_313.yaml exp_name aninerf_313_full resume True aninerf_animation True init_aninerf aninerf_313 test_novel_pose True
-…fg_file configs/aninerf_313.yaml exp_name aninerf_313_full resume False aninerf_animation True init_aninerf aninerf_313
-# visualizing animation of 3rd camera fo
+  <title>Animation Dubbed</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+    }
+
+    header {
+      background: #1c1c1c;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 2px solid #ff3b3b;
+    }
+
+    h1 {
+      margin: 0;
+      color: #ff3b3b;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .hero h2 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .search-box {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 25px;
+    }
+
+    input {
+      width: 300px;
+      max-width: 70%;
+      padding: 14px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 14px 25px;
+      border: none;
+      border-radius: 8px;
+      background: #ff3b3b;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #d92525;
+    }
+
+    #results {
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .anime-card {
+      background: #222;
+      padding: 20px;
+      margin: 10px 0;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .anime-card:hover {
+      background: #333;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #aaa;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>🎬 Animation Dubbed</h1>
+  </header>
+
+  <section class="hero">
+    <h2>Watch Your Favorite Anime</h2>
+    <p>Search for your favorite anime</p>
+
+    <div class="search-box">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search anime..."
+      >
+      <button onclick="searchAnime()">Search</button>
+    </div>
+  </section>
+
+  <section id="results">
+    <h2>🔎 Search Results</h2>
+    <p>Search for an anime above.</p>
+  </section>
+
+  <footer>
+    © 2026 Animation Dubbed
+  </footer>
+
+  <script>
+    const animeList = [
+      "One Piece",
+      "Naruto",
+      "Naruto Shippuden",
+      "Dragon Ball Z",
+      "Attack on Titan",
+      "Demon Slayer",
+      "Jujutsu Kaisen",
+      "Solo Leveling",
+      "Death Note",
+      "Bleach"
+    ];
+
+    function searchAnime() {
+      const input = document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase()
+        .trim();
+
+      const results = document.getElementById("results");
+
+      if (input === "") {
+        results.innerHTML =
+          "<h2>🔎 Search Results</h2><p>Please enter an anime name.</p>";
+        return;
+      }
+
+      const matches = animeList.filter(anime =>
+        anime.toLowerCase().includes(input)
+      );
+
+      if (matches.length === 0) {
+        results.innerHTML =
+          "<h2>🔎 Search Results</h2><p>No anime found.</p>";
+      } else {
+        results.innerHTML = "<h2>🔎 Search Results</h2>";
+
+        matches.forEach(anime => {
+          results.innerHTML +=
+            `<div class="anime-card">${anime}</div>`;
+        });
+      }
+    }
+
+    document
+      .getElementById("searchInput")
+      .addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+          searchAnime();
+        }
+      });
+  </script>
+
+</body>
+</html>
