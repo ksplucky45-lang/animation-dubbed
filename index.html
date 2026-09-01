@@ -58,9 +58,7 @@ button {
 }
 
 #results {
-  margin-top: 25px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  margin-top: 25;
   gap: 20px;
 }
 
@@ -104,7 +102,7 @@ button {
   }
 
   button {
-    width: 100%;
+    width100%;
   }
 }
 </style></head><body><header>
@@ -122,14 +120,14 @@ button {
     <p class="message">Search for an anime above.</p>
   </div></div><script>
 
-function escapeHTML(text) {
+functionescapeHTML(text) {
   const div = document.createElement("div");
   div.textContent = text || "";
   return div.innerHTML;
 }
 
 
-async function searchAnime() {
+asyncfunction searchAnime() {
 
   const input = document
     .getElementById("searchInput")
@@ -161,13 +159,13 @@ async function searchAnime() {
       encodeURIComponent(input) +
       "&limit=25";
 
-    const response =
+    constresponse =
       await fetch(url);
 
 
     if (!response.ok) {
 
-      throw new Error(
+   thrownew
         "Unable to connect to anime database"
       );
 
@@ -241,7 +239,7 @@ async function searchAnime() {
       results.innerHTML =
         '<p class="message"
 
-      return;
+      retur
 
     }
 
@@ -251,24 +249,24 @@ async function searchAnime() {
 
     animeResults.forEach(anime => {
 
-      const title =
+      consttitle =
         anime.title_english ||
         anime.title ||
         "Unknown";
 
 
-      const japaneseTitle =
+      constjapaneseTitle =
         anime.title_japanese ||
         "";
 
 
-      const synonyms =
+      cont synonyms =
         anime.title_synonyms &&
         anime.title_synonyms.length
           ? anime.title_synonyms
               .slice(0, 5)
               .join(", ")
-          : "Not available";
+       available";
 
 
       const image =
@@ -307,8 +305,7 @@ async function searchAnime() {
               .substring(0, 350) +
             (anime.synopsis.length > 350
               ? "..."
-              : "")
-          : "Description not available.";
+              : ""
 
 
       results.innerHTML += `
