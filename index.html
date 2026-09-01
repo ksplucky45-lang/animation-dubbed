@@ -1,7 +1,9 @@
 <!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Animation Dubbed</title><style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="file_0000000041888211a93007c8a6a91a2f.png">
+<title>Animation Dubbed</title><style>
 *{
   margin:0;
   padding:0;
@@ -16,7 +18,7 @@ body{
 
 header{
   background:#1c1c1c;
-  padding:16px 5%;
+  padding:12px 5%;
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -25,9 +27,19 @@ header{
 }
 
 .logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
   color:#ffcc00;
   font-size:24px;
   font-weight:bold;
+}
+
+.logo img{
+  width:45px;
+  height:45px;
+  border-radius:50%;
+  object-fit:cover;
 }
 
 nav a{
@@ -127,11 +139,13 @@ footer{
   }
 }
 </style></head><body><header>
-  <div class="logo">🎬 Animation Dubbed</div>  <nav>
+  <div class="logo">
+    <img src="file_0000000041888211a93007c8a6a91a2f.png" alt="Animation Dubbed Logo">
+    <span>Animation Dubbed</span>
+  </div>  <nav>
     <a href="#">Home</a>
     <a href="#latest">Latest</a>
     <a href="#popular">Popular</a>
-    <a href="#categories">Categories</a>
   </nav>
 </header><section class="hero">
   <h1>Animation Dubbed</h1>
