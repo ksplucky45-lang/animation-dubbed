@@ -1,17 +1,280 @@
-index.html
-ksplucky45-lang
-ksplucky45-lang
-2 minutes ago
-8 lines (7 loc) · 164 Bytes
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-Code
+  <title>Animation Dubbed - Anime Search</title>
 
-Blame
-Animation Dubbed
-Animation Dubbed
-Search for your favorite anime.
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-One piece 
-Search
-🔎 Search Results
-Search could not load. Please check 
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+    }
+
+    header {
+      background: #1b1b1b;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 2px solid #444;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 30px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 25px;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    input {
+      flex: 1;
+      padding: 15px;
+      font-size: 17px;
+      border: none;
+      border-radius: 8px;
+    }
+
+    button {
+      padding: 15px 25px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.85;
+    }
+
+    #results {
+      display: grid;
+      gap: 20px;
+    }
+
+    .anime-card {
+      background: #1e1e1e;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid #333;
+    }
+
+    .anime-card h2 {
+      margin-top: 0;
+    }
+
+    .anime-card p {
+      line-height: 1.6;
+      color: #ddd;
+    }
+
+    .not-found {
+      text-align: center;
+      font-size: 18px;
+      color: #aaa;
+    }
+
+    @media (max-width: 600px) {
+      .search-box {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Animation Dubbed</h1>
+  <p>Search for your favorite anime</p>
+</header>
+
+<div class="container">
+
+  <div class="search-box">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Search anime name..."
+      onkeyup="searchAnime()"
+    >
+
+    <button onclick="searchAnime()">Search</button>
+  </div>
+
+  <h2>🔎 Search Results</h2>
+
+  <div id="results"></div>
+
+</div>
+
+<script>
+
+const animeList = [
+
+  {
+    name: "One Piece",
+    genre: "Action, Adventure, Fantasy",
+    status: "Ongoing",
+    episodes: "1000+",
+    description:
+      "One Piece follows Monkey D. Luffy and his pirate crew as they travel across the seas searching for the legendary treasure known as One Piece."
+  },
+
+  {
+    name: "Naruto",
+    genre: "Action, Adventure, Shounen",
+    status: "Completed",
+    episodes: "220",
+    description:
+      "Naruto follows a young ninja who dreams of becoming the strongest leader of his village."
+  },
+
+  {
+    name: "Naruto Shippuden",
+    genre: "Action, Adventure, Shounen",
+    status: "Completed",
+    episodes: "500",
+    description:
+      "Naruto continues his journey as he faces powerful enemies and works to protect his friends and village."
+  },
+
+  {
+    name: "Dragon Ball Z",
+    genre: "Action, Adventure, Fantasy",
+    status: "Completed",
+    episodes: "291",
+    description:
+      "Goku and his friends defend Earth against powerful enemies from across the universe."
+  },
+
+  {
+    name: "Attack on Titan",
+    genre: "Action, Dark Fantasy",
+    status: "Completed",
+    episodes: "Multiple seasons",
+    description:
+      "Humanity fights for survival in a world threatened by gigantic Titans."
+  },
+
+  {
+    name: "Demon Slayer",
+    genre: "Action, Fantasy",
+    status: "Ongoing",
+    episodes: "Multiple seasons",
+    description:
+      "A young boy becomes a demon slayer after tragedy strikes his family."
+  },
+
+  {
+    name: "Jujutsu Kaisen",
+    genre: "Action, Supernatural",
+    status: "Ongoing",
+    episodes: "Multiple seasons",
+    description:
+      "Students battle dangerous curses using supernatural abilities."
+  },
+
+  {
+    name: "Death Note",
+    genre: "Mystery, Psychological, Supernatural",
+    status: "Completed",
+    episodes: "37",
+    description:
+      "A student discovers a mysterious notebook with deadly supernatural powers."
+  }
+
+];
+
+
+function searchAnime() {
+
+  const input = document
+    .getElementById("searchInput")
+    .value
+    .toLowerCase()
+    .trim();
+
+  const results = document.getElementById("results");
+
+  results.innerHTML = "";
+
+  if (input === "") {
+    results.innerHTML =
+      '<p class="not-found">Search for an anime above.</p>';
+    return;
+  }
+
+
+  const filteredAnime = animeList.filter(anime =>
+    anime.name.toLowerCase().includes(input)
+  );
+
+
+  if (filteredAnime.length === 0) {
+
+    results.innerHTML =
+      '<p class="not-found">No anime found.</p>';
+
+    return;
+  }
+
+
+  filteredAnime.forEach(anime => {
+
+    results.innerHTML += `
+
+      <div class="anime-card">
+
+        <h2>${anime.name}</h2>
+
+        <p><b>Genre:</b> ${anime.genre}</p>
+
+        <p><b>Status:</b> ${anime.status}</p>
+
+        <p><b>Episodes:</b> ${anime.episodes}</p>
+
+        <p><b>About:</b> ${anime.description}</p>
+
+      </div>
+
+    `;
+
+  });
+
+}
+
+
+document
+  .getElementById("searchInput")
+  .addEventListener("keypress", function(event) {
+
+    if (event.key === "Enter") {
+      searchAnime();
+    }
+
+  });
+
+</script>
+
+</body>
+</html>
